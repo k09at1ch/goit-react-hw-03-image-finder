@@ -22,8 +22,8 @@ body {
 
 img {
   display: block;
-  max-width: 100%;
-  height: auto;
+  width: 450px;
+  height: 400px;
 }
 
 /*
@@ -45,6 +45,7 @@ img {
   position: sticky;
   z-index: 1100;
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   min-height: 64px;
@@ -181,6 +182,7 @@ img {
 * Стили компонента Buton (Load more)
 */
 .Button {
+  z-index: 1;
   padding: 8px 16px;
   border-radius: 2px;
   background-color: #3f51b5;

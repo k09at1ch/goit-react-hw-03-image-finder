@@ -1,15 +1,15 @@
 import React from 'react';
-import './ImageGallery.css';
+import style from'./styles.module.css';
 
 const ImageGallery = ({ images, onClick }) => {
   return (
-    <div className="image-gallery">
+    <div className={style.Searchbar}>
       {images.map((image) => (
         <img
           key={image.id}
           src={image.webformatURL}
           alt={image.tags}
-          className="image-gallery-item"
+          className={style.img}
           onClick={() => onClick(image.largeImageURL)}
         />
       ))}

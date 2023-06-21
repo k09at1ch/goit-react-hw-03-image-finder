@@ -4,7 +4,7 @@ import ImageGallery from './ImageGallery';
 import Button from './Button';
 import axios from 'axios';
 import Modal from './Modal';
-import './App.css';
+import style from'./styles.module.css';
 
 class App extends Component {
   constructor(props) {
@@ -86,7 +86,7 @@ class App extends Component {
     const showLoadMoreButton = images.length > 0 && images.length % 12 === 0;
 
     return (
-      <div className="App">
+      <div className={style.App}>
         <SearchBar searchImages={this.searchImages} />
         {isLoading ? (
           <div className="loading-spinner">
@@ -96,14 +96,19 @@ class App extends Component {
         ) : (
           <div>
             <ImageGallery images={images} onClick={this.openModal} />
-            {showLoadMoreButton && <Button onClick={this.loadMoreImages} />}
-            {showModal && (
-              <Modal imageUrl={selectedImageUrl} onClose={this.closeModal} />
-            )}
           </div>
+        )}
+        {showLoadMoreButton && (
+          <div className={style.LoadMoreButton}>
+            <Button className={style.Button} onClick={this.loadMoreImages} />
+          </div>
+        )}
+        {showModal && (
+          <Modal imageUrl={selectedImageUrl} onClose={this.closeModal} />
         )}
       </div>
     );
+    
   }
 }
 
