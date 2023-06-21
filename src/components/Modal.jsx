@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import style from'./styles.module.css';
+import style from './styles.module.css';
 
 class Modal extends Component {
   componentDidMount() {
@@ -23,15 +23,12 @@ class Modal extends Component {
   };
 
   render() {
-    const { imageUrl, onClose } = this.props;
+    const { imageUrl } = this.props;
 
     return (
       <div className={style.Overlay} onClick={this.handleClickOutside}>
         <div className={style.Modal}>
           <img src={imageUrl} alt="Selected" />
-          {/* <button onClick={onClose} className="modal-close-button">
-            X
-          </button> */}
         </div>
       </div>
     );
