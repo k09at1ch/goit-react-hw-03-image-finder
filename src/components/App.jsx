@@ -48,7 +48,6 @@ class App extends Component {
     event.preventDefault();
     const { page, images, query } = this.state;
     const Key = '37472312-0ce04a1f581e4d9faa34fba80';
-    this.setState({ isLoading: true });
 
     axios
       .get(
