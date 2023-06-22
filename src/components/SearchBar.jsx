@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import style from './styles.module.css'
 class SearchBar extends Component {
   constructor(props) {
     super(props);
@@ -8,7 +8,7 @@ class SearchBar extends Component {
     };
   }
 
-  handleSubmit = event => {
+  handleSubmit = (event) => {
     event.preventDefault();
     const { query } = this.state;
     this.props.searchImages(query);
@@ -22,9 +22,9 @@ class SearchBar extends Component {
     const { query } = this.state;
 
     return (
-      <header className="searchbar">
+      <header className={style.SearchForm}>
         <form className="form" onSubmit={this.handleSubmit}>
-          <button type="submit" className="button">
+          <button className="button">
             <span className="button-label">Search</span>
           </button>
 

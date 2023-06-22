@@ -17,7 +17,7 @@ class Modal extends Component {
   };
 
   handleClickOutside = (event) => {
-    if (event.target.classList.contains('modal-overlay')) {
+    if (event.target.classList.contains(style.Overlay)) {
       this.props.onClose();
     }
   };
