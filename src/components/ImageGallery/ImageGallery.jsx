@@ -1,9 +1,9 @@
 import React from 'react';
-import style from'./styles.module.css';
+import style from'./ImageGallery.module.css';
 
 const ImageGallery = ({ images, onClick }) => {
   return (
-    <div className={style.Searchbar}>
+    <div className={style.ImageGallery}>
       {images.map((image) => (
         <img
           key={image.id}

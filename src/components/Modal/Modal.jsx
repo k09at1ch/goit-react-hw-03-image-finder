@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import style from './styles.module.css';
+import style from './Modal.module.css';
 
 class Modal extends Component {
   componentDidMount() {
@@ -28,7 +28,7 @@ class Modal extends Component {
     return (
       <div className={style.Overlay} onClick={this.handleClickOutside}>
         <div className={style.Modal}>
-          <img src={imageUrl} alt="Selected" />
+          <img src={imageUrl} alt="Selected" className={style.SelectedImage} />
         </div>
       </div>
     );

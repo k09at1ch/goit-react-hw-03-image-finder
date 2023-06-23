@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import SearchBar from './SearchBar';
-import ImageGallery from './ImageGallery';
-import Button from './Button';
+import SearchBar from '../SearchBar/SearchBar';
+import ImageGallery from '../ImageGallery/ImageGallery';
+import Button from '../Button/Button';
 import axios from 'axios';
-import Modal from './Modal';
-import style from'./styles.module.css';
+import Modal from '../Modal/Modal';
+import style from'./App.module.css';
 
 class App extends Component {
   constructor(props) {
@@ -20,7 +20,6 @@ class App extends Component {
   }
 
   searchImages = (query, event) => {
-    
     const Key = '37472312-0ce04a1f581e4d9faa34fba80';
 
     this.setState({ isLoading: true });
@@ -29,17 +28,15 @@ class App extends Component {
       .get(
         `https://pixabay.com/api/?key=${Key}&q=${query}&page=1&image_type=photo&orientation=horizontal&per_page=12`
       )
-      .then(data => {
+      .then((data) => {
         this.setState({
           images: data.data.hits,
           page: 1,
           query,
           isLoading: false,
         });
-        console.log(data.data);
       })
-      .catch(error => {
-        console.log(error);
+      .catch((error) => {
         this.setState({ isLoading: false });
       });
   };
@@ -53,7 +50,7 @@ class App extends Component {
       .get(
         `https://pixabay.com/api/?key=${Key}&q=${query}&page=${page + 1}&image_type=photo&orientation=horizontal&per_page=12`
       )
-      .then(data => {
+      .then((data) => {
         const newImages = data.data.hits;
         const allImages = [...images, ...newImages];
         const newPage = page + 1;
@@ -61,13 +58,13 @@ class App extends Component {
         this.setState({ images: allImages, page: newPage, isLoading: false });
         console.log(data.data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
         this.setState({ isLoading: false });
       });
   };
 
-  openModal = imageUrl => {
+  openModal = (imageUrl) => {
     this.setState({
       showModal: true,
       selectedImageUrl: imageUrl,
@@ -95,7 +92,7 @@ class App extends Component {
           </div>
         ) : (
           <div>
-            <ImageGallery images={images} onClick={this.openModal} />
+            <ImageGallery images={images} onClick={(imageUrl) => this.openModal(imageUrl)} />
           </div>
         )}
         {showLoadMoreButton && (
@@ -108,7 +105,6 @@ class App extends Component {
         )}
       </div>
     );
-    
   }
 }
 
