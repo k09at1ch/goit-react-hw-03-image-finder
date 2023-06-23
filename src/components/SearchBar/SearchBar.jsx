@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import style from './SearchBar.module.css';
 
 class SearchBar extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      query: '',
-    };
-  }
+  state = {
+    query: '',
+  };
 
   handleSubmit = (event) => {
     event.preventDefault();
@@ -15,7 +13,7 @@ class SearchBar extends Component {
     this.props.searchImages(query);
   };
 
-  handleChange = event => {
+  handleChange = (event) => {
     this.setState({ query: event.target.value });
   };
 
@@ -43,5 +41,9 @@ class SearchBar extends Component {
     );
   }
 }
+
+SearchBar.propTypes = {
+  searchImages: PropTypes.func.isRequired,
+};
 
 export default SearchBar;

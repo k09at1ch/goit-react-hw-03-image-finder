@@ -1,62 +1,49 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import SearchBar from '../SearchBar/SearchBar';
 import ImageGallery from '../ImageGallery/ImageGallery';
 import Button from '../Button/Button';
-import axios from 'axios';
 import Modal from '../Modal/Modal';
-import style from'./App.module.css';
+import style from './App.module.css';
+import handleSearchImages from './FetchFunc';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      images: [],
-      page: 1,
-      query: '',
-      isLoading: false,
-      showModal: false,
-      selectedImageUrl: '',
-    };
-  }
-
-  searchImages = (query, event) => {
-    const Key = '37472312-0ce04a1f581e4d9faa34fba80';
-
-    this.setState({ isLoading: true });
-
-    axios
-      .get(
-        `https://pixabay.com/api/?key=${Key}&q=${query}&page=1&image_type=photo&orientation=horizontal&per_page=12`
-      )
-      .then((data) => {
-        this.setState({
-          images: data.data.hits,
-          page: 1,
-          query,
-          isLoading: false,
-        });
-      })
-      .catch((error) => {
-        this.setState({ isLoading: false });
-      });
+  static propTypes = {
+    apiKey: PropTypes.string.isRequired,
   };
 
-  loadMoreImages = (event) => {
-    event.preventDefault();
-    const { page, images, query } = this.state;
-    const Key = '37472312-0ce04a1f581e4d9faa34fba80';
+  state = {
+    images: [],
+    page: 1,
+    query: '',
+    isLoading: false,
+    showModal: false,
+    selectedImageUrl: '',
+  };
 
-    axios
-      .get(
-        `https://pixabay.com/api/?key=${Key}&q=${query}&page=${page + 1}&image_type=photo&orientation=horizontal&per_page=12`
-      )
-      .then((data) => {
-        const newImages = data.data.hits;
-        const allImages = [...images, ...newImages];
-        const newPage = page + 1;
+  handleSearchImages = (query, page = 1) => {
+    const { apiKey } = this.props;
 
-        this.setState({ images: allImages, page: newPage, isLoading: false });
-        console.log(data.data);
+    handleSearchImages(query, page, apiKey)
+      .then((newImages) => {
+        if (page === 1) {
+          this.setState({
+            images: newImages,
+            page: 1,
+            query,
+            isLoading: false,
+          });
+        } else {
+          const { images } = this.state;
+          const allImages = [...images, ...newImages];
+
+          this.setState({
+            images: allImages,
+            page,
+            query,
+            isLoading: false,
+          });
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -84,7 +71,7 @@ class App extends Component {
 
     return (
       <div className={style.App}>
-        <SearchBar searchImages={this.searchImages} />
+        <SearchBar searchImages={this.handleSearchImages} />
         {isLoading ? (
           <div className="loading-spinner">
             <div className="spinner"></div>
@@ -92,17 +79,18 @@ class App extends Component {
           </div>
         ) : (
           <div>
-            <ImageGallery images={images} onClick={(imageUrl) => this.openModal(imageUrl)} />
+            <ImageGallery images={images} onClick={this.openModal} />
           </div>
         )}
         {showLoadMoreButton && (
           <div className={style.LoadMoreButton}>
-            <Button className={style.Button} onClick={this.loadMoreImages} />
+            <Button
+              className={style.Button}
+              onClick={() => this.handleSearchImages(this.state.query, this.state.page + 1)}
+            />
           </div>
         )}
-        {showModal && (
-          <Modal imageUrl={selectedImageUrl} onClose={this.closeModal} />
-        )}
+        {showModal && <Modal imageUrl={selectedImageUrl} onClose={this.closeModal} />}
       </div>
     );
   }
