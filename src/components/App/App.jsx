@@ -1,3 +1,4 @@
+//дайте будь ласка всі помилки в 1 відео, бо я  так не встигну до здачі всіх дз. Як тільки ви повернете завдання на допрацювання або приймете, я цей рядок приберу
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import SearchBar from '../SearchBar/SearchBar';
@@ -5,7 +6,7 @@ import ImageGallery from '../ImageGallery/ImageGallery';
 import Button from '../Button/Button';
 import Modal from '../Modal/Modal';
 import style from './App.module.css';
-import handleSearchImages from './FetchFunc';
+import handleSearchImages from '../../FetchFunc';
 
 class App extends Component {
   static propTypes = {
@@ -20,17 +21,19 @@ class App extends Component {
     showModal: false,
     selectedImageUrl: '',
   };
+  performSearch = () => {
+    const { query, page } = this.state;
+    this.handleSearchImages(query, page);
+  };
 
   handleSearchImages = (query, page = 1) => {
     const { apiKey } = this.props;
-
     handleSearchImages(query, page, apiKey)
       .then((newImages) => {
         if (page === 1) {
           this.setState({
             images: newImages,
             page: 1,
-            query,
             isLoading: false,
           });
         } else {
@@ -40,7 +43,6 @@ class App extends Component {
           this.setState({
             images: allImages,
             page,
-            query,
             isLoading: false,
           });
         }
@@ -49,6 +51,15 @@ class App extends Component {
         console.log(error);
         this.setState({ isLoading: false });
       });
+  };
+
+  fetchImages = () => {
+    this.setState(
+      (prevState) => ({
+        page: prevState.page + 1,
+      }),
+      this.performSearch
+    );
   };
 
   openModal = (imageUrl) => {
@@ -86,8 +97,10 @@ class App extends Component {
           <div className={style.LoadMoreButton}>
             <Button
               className={style.Button}
-              onClick={() => this.handleSearchImages(this.state.query, this.state.page + 1)}
-            />
+              onClick={this.fetchImages}
+            >
+              Load More
+            </Button>
           </div>
         )}
         {showModal && <Modal imageUrl={selectedImageUrl} onClose={this.closeModal} />}
